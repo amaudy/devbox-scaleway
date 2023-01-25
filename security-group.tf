@@ -2,9 +2,6 @@ data "http" "myip" {
   url = "http://ipv4.icanhazip.com"
 }
 
-resource "scaleway_instance_security_group" "allow_all" {
-}
-
 resource "scaleway_instance_security_group" "devbox" {
   name                   = "scaleway-devbox"
   inbound_default_policy = "drop" # By default we drop incoming traffic that do not match any inbound_rule
