@@ -1,0 +1,28 @@
+---
+- name: Update apt-get Repository and Cache
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  register: apt_status
+  until: apt_status is success
+  delay: 6
+  retries: 10
+
+- name: Upgrade All Apt Packages
+  apt: upgrade=dist force_apt_get=yes
+  register: apt_status
+  until: apt_status is success
+  delay: 6
+  retries: 10
+
+- name: Detect reboot need?
+  register: reboot_required_file
+  stat: path=/var/run/reboot-required get_md5=no
+
+- name: Reboot the server
+  reboot:
+    msg: "Reboot initiated by Ansible due to kernel updates"
+    connect_timeout: 5
+    reboot_timeout: 300
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: reboot_required_file.stat.exists

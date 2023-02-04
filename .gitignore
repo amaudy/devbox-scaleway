@@ -32,3 +32,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# ansible
+ansible/vars/default.yml
+
+# developer keys folder
+ansible/developer-keys/
