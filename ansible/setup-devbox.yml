@@ -10,3 +10,4 @@
     - users
     - copy-developer-keys
     # - install-docker
+    - install-k3s

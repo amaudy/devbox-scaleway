@@ -1,0 +1,20 @@
+---
+- name: Check if k3s Service Exists
+  stat: path=/etc/systemd/system/k3s.service
+  register: service_status
+
+- name: Install k3s via shell script
+  shell:
+      "curl -sfL https://get.k3s.io | sh -"
+  when: service_status.stat.exists == false
+
+- name: Check if k3s configuration exist
+  stat: path=/etc/rancher/k3s/k3s.yaml
+  register: k3s_status
+
+- name: Change file permissions to other developer
+  ansible.builtin.file:
+    path: /etc/rancher/k3s/k3s.yaml
+    mode: '0444'
+  when: k3s_status.stat.exists == true
+  
